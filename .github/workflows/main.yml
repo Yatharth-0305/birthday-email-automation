@@ -1,0 +1,30 @@
+name: Send Birthday Emails
+
+on:
+  schedule:
+    - cron: '30 3 * * *'  # Runs at 03:30 UTC every day (9:00 AM IST)
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  send-emails:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install smtplib ssl
+
+    - name: Run birthday email script
+      env:
+        EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+      run: python send_birthday_email.py
