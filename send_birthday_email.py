@@ -1,5 +1,6 @@
 import os
-
+import smtplib
+import ssl
 import csv
 from datetime import datetime
 from email.mime.text import MIMEText
